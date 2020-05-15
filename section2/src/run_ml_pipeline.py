@@ -14,7 +14,7 @@ class Config:
     """
     def __init__(self):
         self.name = "Basic_unet"
-        self.root_dir = r"YOUR DIRECTORY HERE"
+        self.root_dir = r"/home/workspace/"
         self.n_epochs = 10
         self.learning_rate = 0.0002
         self.batch_size = 8
