@@ -227,6 +227,9 @@ TODO: Instructions for setting up the environment from Sect3
 
 This project is licensed under the MIT License - see the [LICENSE.md]()
 
+Alzheimer_model.pth file
+https://drive.google.com/open?id=1Hyx4DVmFeGL2TS4zVlcQ2DZo_QMvYyTL
+
 ## Sources
 
 [1] [www.sciencedirect.com/science/article/pii/S2213158219302542](https://www.sciencedirect.com/science/article/pii/S2213158219302542)  
