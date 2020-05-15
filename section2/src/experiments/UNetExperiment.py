@@ -158,6 +158,8 @@ class UNetExperiment:
 
         with torch.no_grad():
             for i, batch in enumerate(self.val_loader):
+                data = batch["image"]
+                target = batch["seg"]
                 
                 # TASK: Write validation code that will compute loss on a validation sample
                 # <YOUR CODE HERE>
@@ -172,16 +174,18 @@ class UNetExperiment:
                 # We report loss that is accumulated across all of validation set
                 loss_list.append(loss.item())
 
-        self.scheduler.step(np.mean(loss_list))
+        
 
-        log_to_tensorboard(
-            self.tensorboard_val_writer,
-            np.mean(loss_list),
-            data,
-            target,
-            prediction_softmax, 
-            prediction,
-            (self.epoch+1) * 100)
+                log_to_tensorboard(
+                    self.tensorboard_val_writer,
+                    np.mean(loss_list),
+                    data,
+                    target,
+                    prediction_softmax, 
+                    prediction,
+                    (self.epoch+1) * 100)
+        
+        self.scheduler.step(np.mean(loss_list))
         print(f"Validation complete")
 
     def save_model_parameters(self):
