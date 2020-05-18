@@ -125,11 +125,11 @@ def create_report(inference, header, orig_vol, pred_vol):
     #
     # Create a PIL image from array:
     # Numpy array needs to flipped, transposed and normalized to a matrix of values in the range of [0..255]
-    nd_img = np.flip((slice/np.max(slice))*0xff).T.astype(np.uint8)
-    # This is how you create a PIL image from numpy array
-    pil_i = Image.fromarray(nd_img, mode="L").convert("RGBA").resize(nd_img.shape)
+    # nd_img = np.flip((slice/np.max(slice))*0xff).T.astype(np.uint8)
+    # # This is how you create a PIL image from numpy array
+    # pil_i = Image.fromarray(nd_img, mode="L").convert("RGBA").resize(nd_img.shape)
     # Paste the PIL image into our main report image object (pimg)
-    pimg.paste(pil_i, box=(10, 280))
+    # pimg.paste(pil_i, box=(10, 280))
 
     return pimg
 
