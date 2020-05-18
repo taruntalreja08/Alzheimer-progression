@@ -61,22 +61,23 @@ def get_predicted_volumes(pred):
     """
 
     # TASK: Compute the volume of your hippocampal prediction
-    # <YOUR CODE HERE>
-    anterior_volume = 0
-    posterior_volume = 0
-    total_volume = 0
-    a = pred.shape[0]
-    b = pred.shape[1]
-    c = pred.shape[2]
-    for i in range(a):
-        for j in range(b):
-            for k in range(c):
-                if pred[i,j,k] == 2:
-                    posterior_volume += 1
-                elif pred[i,j,k] == 1:
-                    anterior_volume += 1
-    total_volume = sum(anterior_volume, posterior_volume) 
-    return {"anterior": anterior_volume, "posterior": posterior_volume, "total": total_volume}
+    anterior_vol = 0
+    posterior_vol = 0
+    for x in range(pred.shape[0]):
+        for y in range(pred.shape[1]):
+            for z in range(pred.shape[2]):
+                # if pred is 0, it belongs to bg
+                if pred[x,y,z] == 0:
+                    # skip in this case
+                    continue
+                else:
+                    # if pred is 1, it belongs to anterior volume
+                    if pred[x,y,z] == 1:
+                        anterior_vol += 1
+                    # if pred is 2, it belongs to posterior volume
+                    if pred[x,y,z] == 2:
+                        posterior_vol += 1
+    return {"anterior": anterior_vol, "posterior": posterior_vol, "total": anterior_vol+posterior_vol}
 
 def create_report(inference, header, orig_vol, pred_vol):
     """Generates an image with inference report
@@ -288,7 +289,7 @@ if __name__ == "__main__":
     # TASK: Use the UNetInferenceAgent class and model parameter file from the previous section
     inference_agent = UNetInferenceAgent(
         device="cpu",
-        parameter_file_path=r"<PATH TO PARAMETER FILE>")
+        parameter_file_path=r"/out/Alzheimer_model.pth")
 
     # Run inference
     # TASK: single_volume_inference_unpadded takes a volume of arbitrary size 
