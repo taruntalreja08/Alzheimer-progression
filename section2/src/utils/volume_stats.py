@@ -53,6 +53,7 @@ def Jaccard3d(a, b):
     # TASK: Write implementation of Jaccard similarity coefficient. Please do not use 
     # the Dice3D function from above to do the computation ;)
     # <YOUR CODE GOES HERE>
-    set_a = set(a)
-    set_b = set(b)
-    return len(set_a.intersection(set_b)) / len(set_a.union(set_b))
+    x = np.asarray(a, np.bool)
+    y = np.asarray(b, np.bool)
+    return np.double(np.bitwise_and(x, y).sum()) / np.double(np.bitwise_or(x, y).sum())
+
