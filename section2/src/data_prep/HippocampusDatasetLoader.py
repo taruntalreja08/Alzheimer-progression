@@ -39,7 +39,6 @@ def LoadHippocampusData(root_dir, y_shape, z_shape):
         label, _ = load(os.path.join(label_dir, f))
 
         # TASK: normalize all images (but not labels) so that values are in [0..1] range
-        # <YOUR CODE GOES HERE>
         # added normalization of all images 
         normlized_image = np.asarray(image).astype('float32') / 255.0
 
