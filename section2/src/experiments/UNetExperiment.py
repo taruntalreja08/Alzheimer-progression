@@ -96,9 +96,6 @@ class UNetExperiment:
             # TASK: You have your data in batch variable. Put the slices as 4D Torch Tensors of 
             # shape [BATCH_SIZE, 1, PATCH_SIZE, PATCH_SIZE] into variables data and target. 
             # Feed data to the model and feed target to the loss function
-            # 
-            # data = <YOUR CODE HERE>
-            # target = <YOUR CODE HERE>
             data = batch["image"]
             target = batch["seg"]
 
@@ -108,13 +105,14 @@ class UNetExperiment:
             # so that we can see how the model converges to the solution
             prediction_softmax = F.softmax(prediction, dim=1)
 
+            #loss = self.loss_function(prediction, target[:, 0, :, :].long().to(self.device))
             loss = self.loss_function(prediction, target[:, 0, :, :].long().to(self.device))
 
             # TASK: What does each dimension of variable prediction represent?
             # ANSWER:
             """
-            [8, 3, 64, 64]
-            8 is the batch size and 3 is the class probability
+            [8, 1, 64, 64]
+            8 is the batch size and 1 is the class probability
             64, 64 is the 2d slice dimension
             """
 
@@ -160,32 +158,28 @@ class UNetExperiment:
             for i, batch in enumerate(self.val_loader):
                 data = batch["image"]
                 target = batch["seg"]
+                self.optimizer.zero_grad()
                 
                 # TASK: Write validation code that will compute loss on a validation sample
-                # <YOUR CODE HERE>
-                dev_iter.init_epoch()
-                with torch.no_grad():
-                    for idx, dev in enumerate(dev_iter):
-                        ans = model(dev)
-                        loss = criterion(ans, dev.label)
+                prediction = self.model(data.to(self.device))
+                prediction_softmax = F.softmax(prediction, dim=1)
+                loss = self.loss_function(prediction, target[:, 0, :, :].long().to(self.device))
 
                 print(f"Batch {i}. Data shape {data.shape} Loss {loss}")
 
                 # We report loss that is accumulated across all of validation set
                 loss_list.append(loss.item())
-
-        
-
-                log_to_tensorboard(
-                    self.tensorboard_val_writer,
-                    np.mean(loss_list),
-                    data,
-                    target,
-                    prediction_softmax, 
-                    prediction,
-                    (self.epoch+1) * 100)
         
         self.scheduler.step(np.mean(loss_list))
+        log_to_tensorboard(
+            self.tensorboard_val_writer,
+            np.mean(loss_list),
+            data,
+            target,
+            prediction_softmax, 
+            prediction,
+            (self.epoch+1) * 100)
+
         print(f"Validation complete")
 
     def save_model_parameters(self):

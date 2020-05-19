@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # In a real world scenario you would probably do multiple splits for 
     # multi-fold training to improve your model quality
 
-    keys = range(262)
+    keys = range(260)
 
     # Here, random permutation of keys array would be useful in case if we do something like 
     # a k-fold training and combining the results. 
