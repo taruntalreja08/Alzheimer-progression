@@ -245,11 +245,13 @@ def get_series_for_inference(path):
     # <YOUR CODE HERE>
     series_for_inference = []
     for i in range(len(dicoms)):
+        print(dicoms[i], dicoms[i].SeriesDescription)
         if (dicoms[i].SeriesDescription == "HippoCrop"):
             series_for_inference.append(dicoms[i])
 
 
     # Check if there are more than one series (using set comprehension).
+    print(series_for_inference)
     if len({f.SeriesInstanceUID for f in series_for_inference}) != 1:
         print("Error: can not figure out what series to run inference on")
         return []
@@ -275,13 +277,13 @@ if __name__ == "__main__":
     # one subdirectory contains a full study
     subdirs = [os.path.join(sys.argv[1], d) for d in os.listdir(sys.argv[1]) if
                 os.path.isdir(os.path.join(sys.argv[1], d))]
-
     # Get the latest directory
     study_dir = sorted(subdirs, key=lambda dir: os.stat(dir).st_mtime, reverse=True)[0]
 
     print(f"Looking for series to run inference on in directory {study_dir}...")
 
     # TASK: get_series_for_inference is not complete. Go and complete it
+
     volume, header = load_dicom_volume_as_numpy_from_list(get_series_for_inference(study_dir))
     print(f"Found series of {volume.shape[2]} axial slices")
 
@@ -289,7 +291,7 @@ if __name__ == "__main__":
     # TASK: Use the UNetInferenceAgent class and model parameter file from the previous section
     inference_agent = UNetInferenceAgent(
         device="cpu",
-        parameter_file_path=r"/out/Alzheimer_model.pth")
+        parameter_file_path=r"/home/workspace/out/alzheimer_model.pth")
 
     # Run inference
     # TASK: single_volume_inference_unpadded takes a volume of arbitrary size 

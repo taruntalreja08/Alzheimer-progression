@@ -63,7 +63,7 @@ class UNetInferenceAgent:
         slices.append(volume[0:1])
         arr = np.zeros(volume.shape, dtype=np.float32) 
         
-        for idx, label in enumerate(slices):
+        for idx, label in enumerate(labels.values):
             if label is not np.nan:
                 label = label.split(" ")
                 mask = np.zeros(volume.shape[1] * volume.shape[2], dtype=np.uint8)
